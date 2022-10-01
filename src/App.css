@@ -1,0 +1,15 @@
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+:root {
+    --purple: #A65ACA;
+    --white: #ffffff;
+    --blue: #e2eafc;
+    --black: #000000;
+    --grey: #bababa;
+  }
+  

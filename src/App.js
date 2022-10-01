@@ -1,11 +1,10 @@
-import PopularFoods from "./components/PopularFoods";
+import SearchBar from "./components/SearchBar/SearchBar";
+import "./App.css";
 
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <PopularFoods />
-            </header>
+            <SearchBar />
         </div>
     );
 }

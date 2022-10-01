@@ -1,0 +1,10 @@
+.results-container {
+    background-color: var(--white);
+    width: 700px;
+    height: fit-content;
+}
+
+
+.paired-wines-container {
+    display: flex;
+}
