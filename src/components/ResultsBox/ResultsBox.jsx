@@ -11,7 +11,7 @@ export default function ResultsBox(props) {
 
     return (
         <div className="results-container">
-            <h2>Wines that go well with {props.searchQuery}</h2>
+            <h3>Wines that go well with {props.searchQuery}</h3>
             <div className="paired-wines-container">{pairedWinesEl}</div>
         </div>
     );
