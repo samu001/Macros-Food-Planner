@@ -17,7 +17,7 @@ export default function RecomendationsBox(props) {
 
     return (
         <div className="recomendation-section">
-            <h3>Product Recomendation</h3>
+            <h3>Product Recomendation:</h3>
             <div className="matches">{matchesEl}</div>
         </div>
     );

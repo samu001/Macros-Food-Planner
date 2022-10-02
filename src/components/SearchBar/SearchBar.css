@@ -12,7 +12,7 @@
     height: fit-content;
     width: 50%;
     background-color: var(--white);
-    margin: 5rem auto;
+    margin: 2rem auto;
 }
 
 .search-bar-container {
@@ -21,6 +21,7 @@
     min-width: 240px;
     flex-direction: column;
 }
+
 
 .search-bar-container input {
     max-width: 800px;
@@ -32,8 +33,16 @@
     background: var(--grey);
     margin-bottom: 1.4rem;
     border: none;
-    padding-left: 2.4rem;
+    padding-left: 5%;
 }
+
+textarea:focus, input:focus{ 
+    outline: none;
+ }
+
+ input::placeholder {
+    color: #8a7c86;
+ }
 
 
 

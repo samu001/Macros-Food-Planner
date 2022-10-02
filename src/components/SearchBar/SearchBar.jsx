@@ -3,6 +3,9 @@ import "./SearchBar.css";
 import RecomendationsBox from "../Recomendations/RecomendationsBox";
 import ResultsBox from "../ResultsBox/ResultsBox";
 import SliderEl from "../UI/SliderEl";
+import Modal from "../UI/Modal";
+import useModal from "../UI/useModal";
+import { textAlign } from "@mui/system";
 
 export default function SearchBar() {
     const API_KEY = "9f9874c4519949798c78d38210fba603";
@@ -18,6 +21,10 @@ export default function SearchBar() {
     const [searchQuery, setSearchQuery] = useState("");
     const [initialPage, setInitialPage] = useState(true);
     const [maxPrice, setMaxPrice] = useState(25);
+    const [limitReached, setLimitReached] = useState(false);
+
+    // Custom Hook
+    const { isShowing, toggle } = useModal();
 
     // HANDLE THE FETCH
     const handleFetch = (e) => {
@@ -30,18 +37,23 @@ export default function SearchBar() {
         fetch(
             `https://api.spoonacular.com/food/wine/pairing?apiKey=9f9874c4519949798c78d38210fba603&food=${foodText}&maxPrice=${maxPrice}`
         )
-            .then((respose) => respose.json())
-            .then((respose) => {
+            .then((response) => response.json())
+            .then((response) => {
                 // With the data from the respones fill the elements. u could also store it
-                setDataForElements(respose);
+                setDataForElements(response);
                 // Stop loading
                 setIsLoading(false);
+            })
+            .then((response) => {
+                if (response === undefined) {
+                    // console.log("CALL LIMIT REACHED");
+                    setLimitReached(true);
+                }
             });
     };
 
     // Function to set the data for Paired wines and Product Matches
     const setDataForElements = (data) => {
-        console.log(data);
         //If search fails or no good match
         if (data.status === "failure") {
             setPairedWines({
@@ -53,7 +65,7 @@ export default function SearchBar() {
 
             setProductMatches([
                 {
-                    title: "no match",
+                    title: "",
                 },
             ]);
         } else {
@@ -64,6 +76,33 @@ export default function SearchBar() {
             setProductMatches(data.productMatches);
         }
     };
+
+    function displayData() {
+        if (limitReached) {
+            return (
+                <div style={{ color: "#FF0000", textAlign: "center" }}>
+                    API calls limit for today have been reached, thank you for
+                    visiting my project site!
+                </div>
+            );
+        } else {
+            if (!initialPage) {
+                if (isLoading) {
+                    return "LOADING";
+                } else {
+                    return (
+                        <div>
+                            <ResultsBox
+                                wineInfo={pairedWines}
+                                searchQuery={searchQuery}
+                            />
+                            <RecomendationsBox matches={productMatches} />
+                        </div>
+                    );
+                }
+            }
+        }
+    }
 
     // Variable to display the elements on screen. Build the elements with the data collected
     const displayResults = (
@@ -91,7 +130,7 @@ export default function SearchBar() {
                     type="text"
                     onChange={(event) => setFoodText(event.target.value)}
                     value={foodText}
-                    placeholder={"Example: Salmon, Steak, Apple"}
+                    placeholder={"E.g: Salmon, Steak, Apple, Sushi"}
                     autoComplete="off"
                 />
 
@@ -103,23 +142,41 @@ export default function SearchBar() {
                     >
                         Search
                     </button>
-                    <button className="btn more-btn">More Examples</button>
+                    <button
+                        type="button"
+                        className="btn more-btn"
+                        onClick={toggle}
+                    >
+                        More Examples
+                    </button>
+
+                    <Modal isShowing={isShowing} hide={toggle} />
                 </div>
             </form>
 
             <div className="slider">
-                <p>{`Recomendation Max Price $${maxPrice}`}</p>
+                <p>{`Recommendation Max Price $${maxPrice}`}</p>
                 {/* handleChange prop calls a function that updates the state of max price with the value passed from the child */}
                 <SliderEl
                     handleChange={(e) => {
                         setMaxPrice(e.target.value);
                     }}
                 />
+                {/* {limitReached && (
+                    <div style={{ color: "#FF0000", textAlign: "center" }}>
+                        "API calls limit for today have been reached, thank you
+                        for visiting my project site!"
+                    </div>
+                )} */}
             </div>
 
-            <div className="search-results-container">
-                {isLoading ? "LOADING" : displayResults}
-            </div>
+            {/* {(initialPage === false )(
+                <div className="search-results-container">
+                    {isLoading ? "LOADING" : displayResults}
+                </div>
+            )} */}
+
+            {displayData()}
         </div>
     );
 }

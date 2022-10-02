@@ -1,0 +1,32 @@
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.wrapper_ {
+    display: flex;
+}
+
+.hero-section h1 {
+    padding-top: 2px;
+    /* font-family: 'Courgette', cursive; */
+    font-family: 'Dancing Script', cursive;
+    color: var(--purple);
+    font-size: 36px;
+}
+.hero-section p {
+    max-width: 600px;
+    text-align: center;
+    color: var(--purple);
+}
+
+
+.img-container_ {
+    width: 50px;
+}
+
+.img-container_ img {
+    width: 100%;
+}

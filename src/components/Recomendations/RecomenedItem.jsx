@@ -3,12 +3,18 @@ import "./RecommendedItem.css";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function RecomenedItem(props) {
-    console.log("PROP PASSING");
-    console.log(props);
+    function setImgSrc() {
+        if (props.title === "") {
+            return "https://emojipedia-us.s3.amazonaws.com/source/noto-emoji-animations/344/pensive-face_1f614.gif";
+        } else {
+            return props.imgUrl;
+        }
+    }
+
     return (
         <div className="item-container">
             <div className="wine-img-wrapper">
-                <img src={props.imgUrl} alt="wine item" />
+                <img src={setImgSrc()} alt="wine item" />
             </div>
             <div className="item-right-wrapper">
                 <div className="item-info">
