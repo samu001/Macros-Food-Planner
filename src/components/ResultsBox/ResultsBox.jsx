@@ -3,9 +3,10 @@ import "./ResultsBox.css";
 import PairedWine from "../PairedWine/PairedWine";
 
 export default function ResultsBox(props) {
-    const pairedWines = props.pairedWines;
+    const pairedWinesArr = props.wineInfo.winesArr;
+    const description = props.wineInfo.pairText;
 
-    const pairedWinesEl = pairedWines.map((item, key) => {
+    const pairedWinesEl = pairedWinesArr.map((item, key) => {
         return <PairedWine key={key} wineName={item} />;
     });
 
@@ -13,6 +14,7 @@ export default function ResultsBox(props) {
         <div className="results-container">
             <h3>Wines that go well with {props.searchQuery}</h3>
             <div className="paired-wines-container">{pairedWinesEl}</div>
+            <div className="desc">{description}</div>
         </div>
     );
 }

@@ -11,7 +11,7 @@
 }
 
 .left-side {
-    background-color: green;
+    
 }
 .wine-img-wrapper {
     min-width: 100px;
@@ -39,7 +39,7 @@
 }
 
 .item-desc {
-    height: 68px;
+    height: 65px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical; 
@@ -49,8 +49,6 @@
 .item-desc p {
     overflow: hidden;
     text-overflow: ellipsis;
-    /* white-space: nowrap; */
-
 }
 
 /* Cta button to the right of the info */

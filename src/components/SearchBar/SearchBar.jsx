@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import "./SearchBar.css";
-
 import RecomendationsBox from "../Recomendations/RecomendationsBox";
 import ResultsBox from "../ResultsBox/ResultsBox";
+import SliderEl from "../UI/SliderEl";
 
 export default function SearchBar() {
     const API_KEY = "9f9874c4519949798c78d38210fba603";
 
     const noMatchObj = {
         imageUrl:
-            "https://emojipedia-us.s3.amazonaws.com/source/noto-emoji-animations/344/pensive-face_1f614.gif",
+            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2V8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
     };
 
     const [isLoading, setIsLoading] = useState(false);
-    const [pairedWines, setPairedWines] = useState([]);
-    const [productMatches, setProductMatches] = useState([]);
+    const [pairedWines, setPairedWines] = useState("");
+    const [productMatches, setProductMatches] = useState();
     const [foodText, setFoodText] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [initialPage, setInitialPage] = useState(true);
+    const [maxPrice, setMaxPrice] = useState(25);
 
     // HANDLE THE FETCH
     const handleFetch = (e) => {
@@ -28,7 +29,7 @@ export default function SearchBar() {
         setSearchQuery(foodText);
         setInitialPage(false);
         fetch(
-            `https://api.spoonacular.com/food/wine/pairing?apiKey=9f9874c4519949798c78d38210fba603&food=${foodText}`
+            `https://api.spoonacular.com/food/wine/pairing?apiKey=9f9874c4519949798c78d38210fba603&food=${foodText}&maxPrice=${maxPrice}`
         )
             .then((respose) => respose.json())
             .then((respose) => {
@@ -42,15 +43,34 @@ export default function SearchBar() {
     // Function to set the data for Paired wines and Product Matches
     const setDataForElements = (data) => {
         console.log(data);
-        if (data.status === "failure" || data.pairingText === "") {
-            setPairedWines([`Not good pair found for ${foodText}`]);
+        //If search fails or no good match
+        if (data.status === "failure") {
+            setPairedWines({
+                winesArr: [
+                    `Not good pair found for ${foodText} Please enter a different food`,
+                ],
+                pairText: "",
+            });
+
             setProductMatches([noMatchObj]);
         } else {
-            if (data.pairedWines.length === 0) {
-                setPairedWines([`${data.pairingText}`]);
-                console.log("Food is good but not good matches");
+            // No failure but no product matches
+            if (data.productMatches.length === 0) {
+                setPairedWines({
+                    winesArr: data.pairedWines,
+                    pairText: data.pairingText,
+                });
+                setProductMatches([
+                    {
+                        title: "Adjust the price",
+                        img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2V8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+                    },
+                ]);
             } else {
-                setPairedWines(data.pairedWines);
+                setPairedWines({
+                    winesArr: data.pairedWines,
+                    pairText: data.pairingText,
+                });
                 setProductMatches(data.productMatches);
             }
         }
@@ -60,11 +80,11 @@ export default function SearchBar() {
     const displayResults = (
         <div className="overall-search-result-wrapper">
             {initialPage ? (
-                ""
+                "Welcome :)"
             ) : (
                 <div>
                     <ResultsBox
-                        pairedWines={pairedWines}
+                        wineInfo={pairedWines}
                         searchQuery={searchQuery}
                     />
                     <RecomendationsBox matches={productMatches} />
@@ -72,7 +92,7 @@ export default function SearchBar() {
             )}
         </div>
     );
-    // onSubmit={handleFetch}
+
     return (
         <div className="overall-wrapper">
             <form className="search-bar-container" onSubmit={handleFetch}>
@@ -97,6 +117,16 @@ export default function SearchBar() {
                     <button className="btn more-btn">More Examples</button>
                 </div>
             </form>
+
+            <div className="slider">
+                <p>{`Recomendation Max Price $${maxPrice}`}</p>
+                {/* handleChange prop calls a function that updates the state of max price with the value passed from the child */}
+                <SliderEl
+                    handleChange={(e) => {
+                        setMaxPrice(e.target.value);
+                    }}
+                />
+            </div>
 
             <div className="search-results-container">
                 {isLoading ? "LOADING" : displayResults}

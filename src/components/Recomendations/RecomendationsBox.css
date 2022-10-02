@@ -1,4 +1,13 @@
+.recomendation-section {
+
+}
+
+.recomendation-section h3 {
+    margin-bottom: 1rem;
+}
+
 .matches {
     max-width: 600px;
     margin: 0 auto;
 }
+

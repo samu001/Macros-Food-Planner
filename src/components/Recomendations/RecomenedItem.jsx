@@ -3,10 +3,12 @@ import "./RecommendedItem.css";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function RecomenedItem(props) {
+    console.log("PROP PASSING");
+    console.log(props);
     return (
         <div className="item-container">
             <div className="wine-img-wrapper">
-                <img src={props.imgUrl} alt="wine item" />
+                <img src={props.img} alt="wine item" />
             </div>
             <div className="item-right-wrapper">
                 <div className="item-info">
