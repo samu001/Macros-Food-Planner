@@ -8,13 +8,12 @@ export default function SearchBar() {
     const API_KEY = "9f9874c4519949798c78d38210fba603";
 
     const noMatchObj = {
-        imageUrl:
-            "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2V8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+        img: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png",
     };
 
     const [isLoading, setIsLoading] = useState(false);
     const [pairedWines, setPairedWines] = useState("");
-    const [productMatches, setProductMatches] = useState();
+    const [productMatches, setProductMatches] = useState([]);
     const [foodText, setFoodText] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [initialPage, setInitialPage] = useState(true);
@@ -52,27 +51,17 @@ export default function SearchBar() {
                 pairText: "",
             });
 
-            setProductMatches([noMatchObj]);
+            setProductMatches([
+                {
+                    title: "no match",
+                },
+            ]);
         } else {
-            // No failure but no product matches
-            if (data.productMatches.length === 0) {
-                setPairedWines({
-                    winesArr: data.pairedWines,
-                    pairText: data.pairingText,
-                });
-                setProductMatches([
-                    {
-                        title: "Adjust the price",
-                        img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2V8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-                    },
-                ]);
-            } else {
-                setPairedWines({
-                    winesArr: data.pairedWines,
-                    pairText: data.pairingText,
-                });
-                setProductMatches(data.productMatches);
-            }
+            setPairedWines({
+                winesArr: data.pairedWines,
+                pairText: data.pairingText,
+            });
+            setProductMatches(data.productMatches);
         }
     };
 

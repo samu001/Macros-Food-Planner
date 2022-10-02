@@ -8,7 +8,7 @@ export default function RecomenedItem(props) {
     return (
         <div className="item-container">
             <div className="wine-img-wrapper">
-                <img src={props.img} alt="wine item" />
+                <img src={props.imgUrl} alt="wine item" />
             </div>
             <div className="item-right-wrapper">
                 <div className="item-info">
