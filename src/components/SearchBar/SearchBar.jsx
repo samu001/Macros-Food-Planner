@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./SearchBar.css";
 import RecomendationsBox from "../Recomendations/RecomendationsBox";
 import ResultsBox from "../ResultsBox/ResultsBox";
 import SliderEl from "../UI/SliderEl";
 import Modal from "../UI/Modal";
 import useModal from "../UI/useModal";
-import { textAlign } from "@mui/system";
+import BeatLoader from "react-spinners/BeatLoader";
 
 export default function SearchBar() {
     const API_KEY = "02c37ccd9f844734a5aa07d4f0e5ec8c";
@@ -60,8 +60,9 @@ export default function SearchBar() {
                 winesArr: [
                     `Not good pair found for ${foodText}. Please enter a different food`,
                 ],
-                pairText: "",
             });
+
+            setProductMatches([]);
         } else {
             setPairedWines({
                 winesArr: data.pairedWines,
@@ -69,33 +70,12 @@ export default function SearchBar() {
             });
             setProductMatches(data.productMatches);
         }
-
-        // if (data.status === "failure") {
-        //     setPairedWines({
-        //         winesArr: [
-        //             `Not good pair found for ${foodText}. Please enter a different food`,
-        //         ],
-        //         pairText: "",
-        //     });
-
-        //     setProductMatches([
-        //         {
-        //             title: "",
-        //         },
-        //     ]);
-        // } else {
-        // setPairedWines({
-        //     winesArr: data.pairedWines,
-        //     pairText: data.pairingText,
-        // });
-        // setProductMatches(data.productMatches);
-        // }
     };
 
     function displayData() {
         if (!initialPage) {
             if (isLoading) {
-                return "LOADING";
+                return <BeatLoader color={"#5E548E"} />;
             } else {
                 return (
                     <div>
@@ -122,7 +102,6 @@ export default function SearchBar() {
                     placeholder={"E.g: Salmon, Steak, Apple, Sushi"}
                     autoComplete="off"
                 />
-
                 <div className="btn-container">
                     <button
                         disabled={isLoading}

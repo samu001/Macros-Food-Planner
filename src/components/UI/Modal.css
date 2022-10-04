@@ -30,7 +30,7 @@
     background: white;
     position: relative;
     margin: 1.75rem auto;
-    border-radius: 3px;
+    border-radius: 10px;
     max-width: 500px;
     padding: 2rem;
   }
@@ -44,9 +44,17 @@
     font-size: 1.4rem;
     font-weight: 700;
     line-height: 1;
-    color: #000;
-    opacity: .3;
+    color: var(--purple);
     cursor: pointer;
     border: none;
+    background: none;
+    border-radius: 10px;
   }
   
+.modal ul {
+  list-style: none;
+}
+
+.modal p {
+  font-weight: 500;
+}

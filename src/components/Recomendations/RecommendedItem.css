@@ -33,6 +33,13 @@
 .item-right-wrapper {
     display: flex;
 }
+
+.product-link {
+    color: var(--black);
+    cursor: pointer;
+    text-decoration: none;
+}
+
 /* Main Item Info */
 .item-info {
     display: block;
