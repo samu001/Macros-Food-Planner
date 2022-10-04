@@ -8,22 +8,18 @@ import useModal from "../UI/useModal";
 import { textAlign } from "@mui/system";
 
 export default function SearchBar() {
-    const API_KEY = "9f9874c4519949798c78d38210fba603";
-
-    const noMatchObj = {
-        img: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png",
-    };
+    const API_KEY = "02c37ccd9f844734a5aa07d4f0e5ec8c";
 
     const [isLoading, setIsLoading] = useState(false);
     const [pairedWines, setPairedWines] = useState("");
     const [productMatches, setProductMatches] = useState([]);
     const [foodText, setFoodText] = useState("");
+
     const [searchQuery, setSearchQuery] = useState("");
     const [initialPage, setInitialPage] = useState(true);
     const [maxPrice, setMaxPrice] = useState(25);
-    const [limitReached, setLimitReached] = useState(false);
 
-    // Custom Hook
+    // Custom Hook for modal
     const { isShowing, toggle } = useModal();
 
     // HANDLE THE FETCH
@@ -35,7 +31,7 @@ export default function SearchBar() {
         setSearchQuery(foodText);
         setInitialPage(false);
         fetch(
-            `https://api.spoonacular.com/food/wine/pairing?apiKey=9f9874c4519949798c78d38210fba603&food=${foodText}&maxPrice=${maxPrice}`
+            `https://api.spoonacular.com/food/wine/pairing?apiKey=${API_KEY}&food=${foodText}&maxPrice=${maxPrice}`
         )
             .then((response) => response.json())
             .then((response) => {
@@ -46,8 +42,7 @@ export default function SearchBar() {
             })
             .then((response) => {
                 if (response === undefined) {
-                    // console.log("CALL LIMIT REACHED");
-                    setLimitReached(true);
+                    // setLimitReached(true);
                 }
             });
     };
@@ -55,19 +50,18 @@ export default function SearchBar() {
     // Function to set the data for Paired wines and Product Matches
     const setDataForElements = (data) => {
         //If search fails or no good match
-        if (data.status === "failure") {
+        console.log(data);
+
+        if (
+            data.status === "failure" ||
+            (pairedWines.length === undefined && data.pairingText === "")
+        ) {
             setPairedWines({
                 winesArr: [
-                    `Not good pair found for ${foodText} Please enter a different food`,
+                    `Not good pair found for ${foodText}. Please enter a different food`,
                 ],
                 pairText: "",
             });
-
-            setProductMatches([
-                {
-                    title: "",
-                },
-            ]);
         } else {
             setPairedWines({
                 winesArr: data.pairedWines,
@@ -75,51 +69,46 @@ export default function SearchBar() {
             });
             setProductMatches(data.productMatches);
         }
+
+        // if (data.status === "failure") {
+        //     setPairedWines({
+        //         winesArr: [
+        //             `Not good pair found for ${foodText}. Please enter a different food`,
+        //         ],
+        //         pairText: "",
+        //     });
+
+        //     setProductMatches([
+        //         {
+        //             title: "",
+        //         },
+        //     ]);
+        // } else {
+        // setPairedWines({
+        //     winesArr: data.pairedWines,
+        //     pairText: data.pairingText,
+        // });
+        // setProductMatches(data.productMatches);
+        // }
     };
 
     function displayData() {
-        if (limitReached) {
-            return (
-                <div style={{ color: "#FF0000", textAlign: "center" }}>
-                    API calls limit for today have been reached, thank you for
-                    visiting my project site!
-                </div>
-            );
-        } else {
-            if (!initialPage) {
-                if (isLoading) {
-                    return "LOADING";
-                } else {
-                    return (
-                        <div>
-                            <ResultsBox
-                                wineInfo={pairedWines}
-                                searchQuery={searchQuery}
-                            />
-                            <RecomendationsBox matches={productMatches} />
-                        </div>
-                    );
-                }
+        if (!initialPage) {
+            if (isLoading) {
+                return "LOADING";
+            } else {
+                return (
+                    <div>
+                        <ResultsBox
+                            wineInfo={pairedWines}
+                            searchQuery={searchQuery}
+                        />
+                        <RecomendationsBox matches={productMatches} />
+                    </div>
+                );
             }
         }
     }
-
-    // Variable to display the elements on screen. Build the elements with the data collected
-    const displayResults = (
-        <div className="overall-search-result-wrapper">
-            {initialPage ? (
-                "Welcome :)"
-            ) : (
-                <div>
-                    <ResultsBox
-                        wineInfo={pairedWines}
-                        searchQuery={searchQuery}
-                    />
-                    <RecomendationsBox matches={productMatches} />
-                </div>
-            )}
-        </div>
-    );
 
     return (
         <div className="overall-wrapper">
@@ -162,19 +151,7 @@ export default function SearchBar() {
                         setMaxPrice(e.target.value);
                     }}
                 />
-                {/* {limitReached && (
-                    <div style={{ color: "#FF0000", textAlign: "center" }}>
-                        "API calls limit for today have been reached, thank you
-                        for visiting my project site!"
-                    </div>
-                )} */}
             </div>
-
-            {/* {(initialPage === false )(
-                <div className="search-results-container">
-                    {isLoading ? "LOADING" : displayResults}
-                </div>
-            )} */}
 
             {displayData()}
         </div>

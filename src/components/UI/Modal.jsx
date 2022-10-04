@@ -26,7 +26,10 @@ const Modal = ({ isShowing, hide }) =>
                                   <span aria-hidden="true">&times;</span>
                               </button>
                           </div>
-                          <p>Salad, Popcorn, Tilapia, Lamb,</p>
+                          <p>
+                              Salad, Lasagna, Tilapia, Lamb, Turkey, Beef,
+                              Shrimp, Popcorn, Pizza
+                          </p>
                       </div>
                   </div>
               </React.Fragment>,
