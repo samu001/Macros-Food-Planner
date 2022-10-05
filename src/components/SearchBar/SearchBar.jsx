@@ -123,7 +123,7 @@ export default function SearchBar() {
             </form>
 
             <div className="slider">
-                <p>{`Recommendation Max Price $${maxPrice}`}</p>
+                <p>{`Product Max Price $${maxPrice}`}</p>
                 {/* handleChange prop calls a function that updates the state of max price with the value passed from the child */}
                 <SliderEl
                     handleChange={(e) => {

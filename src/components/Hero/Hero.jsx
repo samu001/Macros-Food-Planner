@@ -15,8 +15,7 @@ export default function Hero() {
             </div>
             <p>
                 Find the perfect wine that can fit your next meal! Enter a type
-                of food below to get wines recomendation. -Webpage still on
-                development-
+                of food below to get wines recomendation.
             </p>
         </div>
     );
